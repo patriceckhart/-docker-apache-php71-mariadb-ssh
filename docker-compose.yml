@@ -6,12 +6,13 @@ services:
         image: docker-ssh-lamp
         links:
           - 'db:db'
+          - 'db2:db2'
         volumes:
           - ./app:/app
           - ./var_log:/var/log
         ports:
-          - "2080:80"
-          - "2022:22"
+          - "80:80"
+          - "22:22"
         container_name: "docker-ssh-lamp"
         entrypoint: /app/docker_start.sh
 
@@ -25,3 +26,14 @@ services:
         MYSQL_ROOT_PASSWORD: 'root'
       ports:
         - '3306:3306'
+
+    db2:
+      image: mariadb:10.2.16
+      expose:
+        - 3307
+      environment:
+        MYSQL_USER: 'admin'
+        MYSQL_PASSWORD: 'pass'
+        MYSQL_ROOT_PASSWORD: 'root'
+      ports:
+        - '3307:3306'
